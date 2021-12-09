@@ -21,7 +21,6 @@ function visualCenter(base64, callback, opts = {}) {
             callback(null, {
                 visualTop: visualTop,
                 visualLeft: visualLeft,
-
                 bgColor: bgColor,
                 width: width,
                 height: height
@@ -34,14 +33,15 @@ function visualCenter(base64, callback, opts = {}) {
 }
 
 function calculateVisualCenter(rgbMatrix) {
-    var visualLeft = 0.4;
-    var visualTop = 0.4;
+    var left = 0.4;
+    var top = 0.4;
+    var visualLeft = 0;
+    var visualTop = 0
 
-    var { visualLeft } = recursiveGetCoord(rgbMatrix, visualLeft, visualTop, "X", 1 / ROUNDS);
-    var { visualLeft } = recursiveGetCoord(rgbMatrix, visualLeft, visualTop, "X", -1 / ROUNDS);
-    var { visualTop } = recursiveGetCoord(rgbMatrix, visualLeft, visualTop, "Y", 1 / ROUNDS);
-    var { visualTop } = recursiveGetCoord(rgbMatrix, visualLeft, visualTop, "Y", -1 / ROUNDS);
-
+    visualLeft = recursiveGetCoord(rgbMatrix, left, top, "X", 1 / ROUNDS).visualLeft;
+    visualLeft = recursiveGetCoord(rgbMatrix, visualLeft, top, "X", -1 / ROUNDS).visualLeft;
+    visualTop = recursiveGetCoord(rgbMatrix, visualLeft, top, "Y", 1 / ROUNDS).visualTop;
+    visualTop = recursiveGetCoord(rgbMatrix, visualLeft, visualTop, "Y", -1 / ROUNDS).visualTop;
     return { visualLeft, visualTop };
 }
 

@@ -16,30 +16,31 @@ app.post('/', async (req, res) => {
 
     console.log(req.body.image.startsWith("data:image"))
     const img = new Image();
+    img.crossOrigin = "Anonymous";
     var orig = Buffer.from(reqImage.split(',')[1], 'base64');
+    img.onload = () => {
+        const canvas = createCanvas()
+        canvas.width = img.width
+        canvas.height = img.height
+        console.log('load', img, img.width, img.height)
+        canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height);
 
-    console.log('load')
-    const canvas = createCanvas()
-    canvas.width = img.width
-    canvas.height = img.height
-    canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height);
+
+        const trim = trimCanvas(canvas)
+        console.log('trim', trim)
 
 
-    const trim = trimCanvas(canvas)
-
-    sharp(orig)
-        .resize({ height: trim.bottom, width: trim.right })
-        .toBuffer()
-        .then(resizedImageBuffer => {
-            const resizedImageData = resizedImageBuffer.toString('base64');
-            const imgData = `data:image/png;charset=utf-8;base64,${resizedImageData}`;
-            visualCenter(imgData, (err, result) => {
-                return res.status(200).json(result)
-            })
+        visualCenter(trim, (err, result) => {
+            console.log('res', result)
+            return res.status(200).json(result)
         })
-        .catch(err => console.log(err))
 
+    }
     img.src = reqImage
+
+
+
+
 
 
 })

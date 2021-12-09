@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "base64-to-uint8array": "^1.0.0",
-    "canvas": "^2.8.0",
+    "canvas": "^2.6.1",
     "express": "^4.17.1",
     "image-size": "^1.0.0",
     "lodash": "^4.17.21",
